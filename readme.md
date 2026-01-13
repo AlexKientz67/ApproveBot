@@ -31,7 +31,7 @@ version: '3.8'
 
 services:
   approvebot:
-    image: alexk674/jellyseerr-discord-bot:latest
+    image: alexk674/approvebot:latest
     container_name: approvebot
     restart: unless-stopped
     environment:
@@ -62,7 +62,7 @@ docker run -d \
   -e CHANNEL_ID=123456789 \
   -e APPROVER_ROLE_ID=987654321 \
   --restart unless-stopped \
-  alexk674/jellyseerr-discord-bot:latest
+  alexk674/approvebot:latest
 ```
 
 ---
