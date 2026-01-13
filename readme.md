@@ -79,8 +79,8 @@ docker run -d \
 
 1. **Clonez le dépôt**
 ```bash
-git clone <repository-url>
-cd bot-jellyseerr
+git clone https://github.com/AlexKientz67/ApproveBot.git
+cd ApproveBot
 npm install
 ```
 
