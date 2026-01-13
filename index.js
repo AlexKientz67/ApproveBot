@@ -160,7 +160,7 @@ async function checkForNewRequests() {
       const message = await channel.send({
         content:
           `🔔 **Nouvelle requête en attente**\n` +
-          `🛡️ Validation réservée au rôle <@&${CONFIG.APPROVER_ROLE_ID}>`,
+          `Réagissez avec ✅ pour approuver ou ❌ pour rejeter.`,
         embeds: [embed]
       });
 
