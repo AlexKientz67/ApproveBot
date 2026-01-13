@@ -1,4 +1,4 @@
-# 🎬 Bot Jellyseerr
+# 🎬 ApproveBot
 
 Un bot Discord conçu pour simplifier la gestion des requêtes **Jellyseerr**. Il centralise les demandes de films et séries directement dans un salon Discord et permet une validation rapide via des réactions.
 
@@ -25,21 +25,14 @@ Un bot Discord conçu pour simplifier la gestion des requêtes **Jellyseerr**. I
 
 Un `docker-compose.yml` est fourni pour un déploiement facile :
 
-1. **Créez le fichier `.env`**
-```bash
-cp .env.example .env
-```
-
-2. **Éditez le fichier `.env`** avec vos paramètres
-
-3. **docker-compose.yml**
+**docker-compose.yml**
 ```yaml
 version: '3.8'
 
 services:
-  bot-jellyseerr:
+  approvebot:
     image: alexk674/jellyseerr-discord-bot:latest
-    container_name: bot-jellyseerr
+    container_name: approvebot
     restart: unless-stopped
     environment:
       DISCORD_TOKEN: ${DISCORD_TOKEN}
@@ -56,23 +49,13 @@ networks:
     driver: bridge
 ```
 
-4. **Lancez le bot**
-```bash
-docker-compose up -d
-```
-
-5. **Arrêtez le bot**
-```bash
-docker-compose down
-```
-
 #### Avec Docker
 
 Vous pouvez également lancer l'image directement :
 
 ```bash
 docker run -d \
-  --name bot-jellyseerr \
+  --name approvebot \
   -e DISCORD_TOKEN=votre_token \
   -e JELLYSEERR_URL=https://jellyseerr.example.com \
   -e JELLYSEERR_API_KEY=votre_cle \

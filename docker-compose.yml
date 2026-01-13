@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  bot-jellyseerr:
+  approvebot:
     image: alexk674/jellyseerr-discord-bot:latest
-    container_name: bot-jellyseerr
+    container_name: approvebot
     restart: unless-stopped
     environment:
       DISCORD_TOKEN: ${DISCORD_TOKEN}
@@ -12,9 +12,6 @@ services:
       CHANNEL_ID: ${CHANNEL_ID}
       APPROVER_ROLE_ID: ${APPROVER_ROLE_ID}
       CHECK_INTERVAL: ${CHECK_INTERVAL:-10000}
-    networks:
-      - jellyseerr-network
-
 networks:
   jellyseerr-network:
     driver: bridge
