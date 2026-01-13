@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  bot-jellyseerr:
+    image: alexk674/jellyseerr-discord-bot:latest
+    container_name: bot-jellyseerr
+    restart: unless-stopped
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      JELLYSEERR_URL: ${JELLYSEERR_URL}
+      JELLYSEERR_API_KEY: ${JELLYSEERR_API_KEY}
+      CHANNEL_ID: ${CHANNEL_ID}
+      APPROVER_ROLE_ID: ${APPROVER_ROLE_ID}
+      CHECK_INTERVAL: ${CHECK_INTERVAL:-10000}
+    networks:
+      - jellyseerr-network
+
+networks:
+  jellyseerr-network:
+    driver: bridge

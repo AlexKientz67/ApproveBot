@@ -1,8 +1,8 @@
-const { 
-  Client, 
-  GatewayIntentBits, 
-  EmbedBuilder, 
-  PermissionFlagsBits 
+const {
+  Client,
+  GatewayIntentBits,
+  EmbedBuilder,
+  PermissionFlagsBits
 } = require('discord.js');
 const axios = require('axios');
 
@@ -12,6 +12,7 @@ const CONFIG = {
   JELLYSEERR_URL: process.env.JELLYSEERR_URL,
   JELLYSEERR_API_KEY: process.env.JELLYSEERR_API_KEY,
   CHANNEL_ID: process.env.CHANNEL_ID,
+  APPROVER_ROLE_ID: process.env.APPROVER_ROLE_ID,
   CHECK_INTERVAL: Number(process.env.CHECK_INTERVAL) || 10000
 };
 
@@ -19,7 +20,8 @@ if (
   !CONFIG.DISCORD_TOKEN ||
   !CONFIG.JELLYSEERR_URL ||
   !CONFIG.JELLYSEERR_API_KEY ||
-  !CONFIG.CHANNEL_ID
+  !CONFIG.CHANNEL_ID ||
+  !CONFIG.APPROVER_ROLE_ID
 ) {
   console.error('❌ Variables d’environnement manquantes');
   process.exit(1);
@@ -116,7 +118,9 @@ function createRequestEmbed(request, media) {
       { name: '👤 Demandé par', value: user, inline: true },
       { name: '📅 Date', value: new Date(request.createdAt).toLocaleDateString('fr-FR'), inline: true }
     )
-    .setFooter({ text: `ID: ${request.id}` })
+    .setFooter({
+      text: `ID: ${request.id} • Rôle requis pour validation`
+    })
     .setTimestamp();
 
   if (release) {
@@ -152,8 +156,11 @@ async function checkForNewRequests() {
       if (!media) continue;
 
       const embed = createRequestEmbed(req, media);
+
       const message = await channel.send({
-        content: '🔔 **Nouvelle requête en attente**',
+        content:
+          `🔔 **Nouvelle requête en attente**\n` +
+          `🛡️ Validation réservée au rôle <@&${CONFIG.APPROVER_ROLE_ID}>`,
         embeds: [embed]
       });
 
@@ -175,7 +182,6 @@ async function checkForNewRequests() {
 // ==================== REACTIONS ====================
 client.on('messageReactionAdd', async (reaction, user) => {
   if (user.bot) return;
-
   if (reaction.partial) await reaction.fetch();
 
   const entry = [...pendingRequests.entries()].find(
@@ -186,7 +192,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
   const [requestId] = entry;
   const member = await reaction.message.guild.members.fetch(user.id);
 
-  if (!member.permissions.has(PermissionFlagsBits.Administrator)) {
+  const hasRole = member.roles.cache.has(CONFIG.APPROVER_ROLE_ID);
+  const isAdmin = member.permissions.has(PermissionFlagsBits.Administrator);
+
+  if (!hasRole && !isAdmin) {
     await reaction.users.remove(user.id);
     return;
   }
@@ -198,6 +207,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     success = await approveRequest(requestId);
     action = 'approuvée';
   }
+
   if (reaction.emoji.name === '❌') {
     success = await declineRequest(requestId);
     action = 'rejetée';
