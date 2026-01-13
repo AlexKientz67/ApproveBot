@@ -28,4 +28,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/jellyseerr-discord-bot:latest
+            ${{ secrets.DOCKER_USERNAME }}/approvebot:latest
