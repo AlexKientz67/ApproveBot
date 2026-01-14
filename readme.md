@@ -3,7 +3,6 @@
 Un bot Discord conçu pour simplifier la gestion des requêtes **Jellyseerr**. Il centralise les demandes de films et séries directement dans un salon Discord et permet une validation rapide via des réactions.
 
 ![Node.js](https://img.shields.io/badge/node.js-v16.x+-green.svg)
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
 ---
 
@@ -158,4 +157,4 @@ Les contributions sont bienvenues ! N'hésitez pas à ouvrir des issues ou pull 
 
 ## 📄 Licence
 
-ISC License
+MIT License
